@@ -1,0 +1,49 @@
+{
+  "name": "iPAY",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "compile": "truffle compile",
+    "migrate": "truffle migrate",
+    "reset": "truffle migrate --reset",
+    "console": "truffle console",
+    "fix:js": "eslint --fix test/js/** migrations/**",
+    "lint:js": "eslint test/js/** migrations/**",
+    "lint:sol": "solhint contracts/*.sol contracts/*/*.sol test/*.sol test/*/*.sol",
+    "lint": "npm run lint:js && npm run lint:sol",
+    "publish": "truffle publish",
+    "pretest": "npm run lint",
+    "test": "truffle test",
+    "coverage": "./node_modules/.bin/solidity-coverage",
+    "deploy": "truffle migrate --network rinkeby --reset",
+    "setup:hooks": "ln -s ../../scripts/git-hooks/pre-commit.sh .git/hooks/pre-commit",
+    "setup:mythril": "docker pull mythril/myth",
+    "setup:surya": "npm install -g surya && brew install graphviz",
+    "mythril": "docker run -v $(pwd):/tmp -w \"/tmp/\" mythril/myth --truffle"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "lodash": "^4.17.10",
+    "openzeppelin-solidity": "2.0.0",
+    "truffle-hdwallet-provider": "^1.0.0-web3one.0"
+  },
+  "devDependencies": {
+    "bn.js": "^4.11.8",
+    "eslint": "^4.13.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-mocha": "^4.11.0",
+    "eslint-plugin-node": "^5.1.0",
+    "eslint-plugin-react": "^7.5.1",
+    "solhint": "^1.2.1",
+    "solidity-coverage": "^0.5.11"
+  }
+}
