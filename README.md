@@ -30,6 +30,7 @@ To get started, install the following on your machine:
 > New to Solidity? Here are some recommended resources to start with.
 
 - [Truffle Pet Shop tutorial](https://truffleframework.com/tutorials/pet-shop): An end-to-end walkthrough of the basics of building a dApp.
+- [Program the Blockchaun](https://programtheblockchain.com/): A series of Solidity tutorials.
 - [Solidity in Depth](http://solidity.readthedocs.io/en/v0.4.24/solidity-in-depth.html): It's important to familiarize yourself with the Solidity language.
 - [ERC20 Token Standard Interface](https://theethereum.wiki/w/index.php/ERC20_Token_Standard#The_ERC20_Token_Standard_Interface): Other than the Solidity, you'll want to get familiar with the ERCX standards and EIP proposals within the ecosystem. The ERC20 standard is a widely adopted interface for tokens.
 - [OpenZeppelin](https://github.com/OpenZeppelin/openzeppelin-solidity): Once you have a firm grasp of the language and standards, start going through open source Solidity projects. The OpenZeppelin project is a  useful (albeit incomplete) overview of what's possible with smart contracts.
