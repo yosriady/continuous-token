@@ -17,7 +17,7 @@ contract Proxy {
         assembly {
             let ptr := mload(0x40)
             calldatacopy(ptr, 0, calldatasize)
-            let result := delegatecall(gas, _impl, ptr, calldatasize, 0, 0)
+            let result := delegatecall(gas, _impl, ptr, calldatasize, 0, 0) // in order to ensure that this method can be execute, you should only pass `gas - the gas you need for the remaining execution in this code`
             let size := returndatasize
             returndatacopy(ptr, 0, size)
 

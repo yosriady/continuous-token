@@ -16,7 +16,7 @@ contract UpgradeabilityProxy is Proxy {
     event Upgraded(address indexed implementation);
 
     // Storage position of the address of the current implementation
-    bytes32 private constant IMPLEMENTATION_POSITION = keccak256("org.proxy.implementation");
+    bytes32 private constant IMPLEMENTATION_POSITION = keccak256("org.tenx.proxy.implementation");
 
     /**
     * @dev Tells the address of the current implementation

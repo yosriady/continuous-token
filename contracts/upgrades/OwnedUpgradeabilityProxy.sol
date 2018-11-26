@@ -17,10 +17,10 @@ contract OwnedUpgradeabilityProxy is UpgradeabilityProxy {
     event ProxyOwnershipTransferred(address previousOwner, address newOwner);
 
     // Storage position of the owner of the contract
-    bytes32 private constant PROXY_OWNER_POSITION = keccak256("org.proxy.owner");
+    bytes32 private constant PROXY_OWNER_POSITION = keccak256("org.tenx.proxy.owner");
 
     // Proxy name metadata
-    bytes32 private constant PROXY_NAME_POSITION = keccak256("org.proxy.name");
+    bytes32 private constant PROXY_NAME_POSITION = keccak256("org.tenx.proxy.name");
 
     /**
     * @dev the constructor sets the original owner of the contract to the sender account.
@@ -58,7 +58,7 @@ contract OwnedUpgradeabilityProxy is UpgradeabilityProxy {
         assembly {
             owner := sload(position)
         }
-    }    
+    }
 
     /**
     * @dev Allows the current owner to transfer control of the contract to a newOwner.
@@ -109,5 +109,5 @@ contract OwnedUpgradeabilityProxy is UpgradeabilityProxy {
         assembly {
             sstore(position, newProxyName)
         }
-    }        
+    }
 }

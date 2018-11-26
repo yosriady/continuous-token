@@ -30,14 +30,14 @@ contract Initializable {
     */
     modifier initializer() {
         require(initializing || isConstructor() || !initialized, "Contract instance has already been initialized");
-
+        //recommend to remove initializing
         bool wasInitializing = initializing;
         initializing = true;
         initialized = true;
 
         _;
 
-        initializing = wasInitializing;
+        initializing = wasInitializing; // initializing seems to be always false and could be removed
     }
 
     /// @dev Returns true if and only if the function is running in the constructor

@@ -1,6 +1,7 @@
-module.exports = async (proxyContract, contract) => {
-  const implementation = await contract.new();
-  const proxy = await proxyContract.new();
+// Helper for deploying upgradable contracts
+module.exports = async (deployer, proxyContract, contract) => {
+  const implementation = await deployer.deploy(contract);
+  const proxy = await deployer.deploy(proxyContract);
   await proxy.upgradeTo(implementation.address);
   const upgradable = await contract.at(proxy.address);
   return {
