@@ -1,5 +1,5 @@
-const MyToken = artifacts.require('MyToken.sol');
+const Continuous = artifacts.require('Continuous.sol');
 
 module.exports = async (deployer) => {
-  await deployer.deploy(MyToken);
+  await deployer.deploy(Continuous);
 };

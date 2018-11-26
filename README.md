@@ -48,8 +48,8 @@ First, make sure that **Ganache is up and running locally** at port 7545:
 ### Project Setup
 
 ```bash
-git clone https://github.com/yosriady/dapp-boilerplate
-cd dapp-boilerplate
+git clone https://github.com/yosriady/continuous-token
+cd continuous-token
 npm install # Installs dependencies
 npm run setup:hooks # Sets up pre-commit hook to automatically run linters and unit tests
 npm run test
@@ -76,7 +76,7 @@ To get started, create a new feature branch off of `master`:
 git checkout -b feature/my-new-feature
 ```
 
-Make your changes, then create a [pull request](https://github.com/yosriady/dapp-boilerplate/pulls), and ask for a review. After the review is approved, the author should merge the pull request to `master`. For this we always try to ["squash and merge"](https://blog.github.com/2016-04-01-squash-your-commits/).
+Make your changes, then create a [pull request](https://github.com/yosriady/continuous-token/pulls), and ask for a review. After the review is approved, the author should merge the pull request to `master`. For this we always try to ["squash and merge"](https://blog.github.com/2016-04-01-squash-your-commits/).
 
 ## Thanks
 
