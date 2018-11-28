@@ -40,9 +40,8 @@ To get started, install the following on your machine:
 
 ### Run Ganache
 
-First, make sure that **Ganache is up and running locally** at port 7545:
-
-- Go to Settings > Accounts & Keys 
+- First, make sure that Ganache running locally at port `7545`:
+- Go to Settings > Accounts & Keys
 - Disable `Autogenerate HD Mnemonic` and enter a Mnemonic you wish to use.
 
 ### Project Setup
@@ -56,15 +55,14 @@ npm run test
 npm run start
 ```
 
+> The `.env` file is used to deploy to Testnets such as `Rinkeby`. If you're developing locally, you can skip this step.
+
 Create an `.env` file in this project's root directory (see `env.sample` for an example):
 
 ```
 MNEMONIC='foobar'
 INFURA_ACCESS_TOKEN='test'
 ```
-
-The `.env` file is used to deploy to Testnets such as `Ropsten` and `Rinkeby`. 
-If you're developing locally, you can skip this step.
 
 ## Contributing
 

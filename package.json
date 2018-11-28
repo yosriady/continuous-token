@@ -1,5 +1,5 @@
 {
-  "name": "iPAY",
+  "name": "continuous-token",
   "version": "1.0.0",
   "description": "",
   "main": "truffle-config.js",
