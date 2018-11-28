@@ -3,33 +3,66 @@ pragma solidity 0.4.25;
 
 /**
  * @title Proxy
- * @dev Gives the possibility to delegate any call to a foreign implementation.
+ * @dev Implements delegation of calls to other contracts, with proper
+ * forwarding of return values and bubbling of failures.
+ * It defines a fallback function that delegates all calls to the address
+ * returned by the abstract _implementation() internal function.
  */
 contract Proxy {
     /**
-    * @dev Fallback function allowing to perform a delegatecall to the given implementation.
-    * This function will return whatever the implementation call returns
+    * @dev Fallback function.
+    * Implemented entirely in `_fallback`.
     */
-    function () public payable {
-        address _impl = implementation();
-        require(_impl != address(0), "Implementation cannot be zero address.");
+    function () external payable {
+        _fallback();
+    }
 
+    /**
+    * @return The Address of the implementation.
+    */
+    function _implementation() internal view returns (address);    
+
+    /**
+    * @dev Delegates execution to an implementation contract.
+    * This is a low level function that doesn't return to its internal call site.
+    * It will return to the external caller whatever the implementation returns.
+    * @param implementation Address to delegate.
+    */
+    function _delegate(address implementation) internal {
         assembly {
-            let ptr := mload(0x40)
-            calldatacopy(ptr, 0, calldatasize)
-            let result := delegatecall(gas, _impl, ptr, calldatasize, 0, 0) // in order to ensure that this method can be execute, you should only pass `gas - the gas you need for the remaining execution in this code`
-            let size := returndatasize
-            returndatacopy(ptr, 0, size)
+            // Copy msg.data. We take full control of memory in this inline assembly
+            // block because it will not return to Solidity code. We overwrite the
+            // Solidity scratch pad at memory position 0.
+            calldatacopy(0, 0, calldatasize)
+
+            // Call the implementation.
+            // out and outsize are 0 because we don't know the size yet.
+            let result := delegatecall(gas, implementation, 0, calldatasize, 0, 0)
+
+            // Copy the returned data.
+            returndatacopy(0, 0, returndatasize)
 
             switch result
-            case 0 { revert(ptr, size) }
-            default { return(ptr, size) }
+            // delegatecall returns 0 on error.
+            case 0 { revert(0, returndatasize) }
+            default { return(0, returndatasize) }
         }
     }
 
     /**
-    * @dev Tells the address of the implementation where every call will be delegated.
-    * @return address of the implementation to which it will be delegated
+    * @dev Function that is run as the first thing in the fallback function.
+    * Can be redefined in derived contracts to add functionality.
+    * Redefinitions must call super._willFallback().
     */
-    function implementation() public view returns (address);
+    function _willFallback() internal {
+    }
+
+    /**
+    * @dev fallback implementation.
+    * Extracted to enable manual triggering.
+    */
+    function _fallback() internal {
+        _willFallback();
+        _delegate(_implementation());
+    }
 }
