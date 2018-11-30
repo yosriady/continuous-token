@@ -10,7 +10,7 @@ import "./Power.sol"; // Efficient power function.
 * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements;
 * and to You under the Apache License, Version 2.0. "
 */
-contract BancorBondingCurve is Power {
+contract BancorFormula is Power {
     using SafeMath for uint256;
     uint32 private constant MAX_RESERVE_RATIO = 1000000;
 
@@ -32,7 +32,7 @@ contract BancorBondingCurve is Power {
         uint256 _supply,
         uint256 _reserveBalance,
         uint32 _reserveRatio,
-        uint256 _depositAmount) public pure returns (uint256)
+        uint256 _depositAmount) public view returns (uint256)
     {
         // validate input
         require(_supply > 0 && _reserveBalance > 0 && _reserveRatio > 0 && _reserveRatio <= MAX_RESERVE_RATIO, "Invalid inputs.");
@@ -72,7 +72,7 @@ contract BancorBondingCurve is Power {
         uint256 _supply,
         uint256 _reserveBalance,
         uint32 _reserveRatio,
-        uint256 _sellAmount) public pure returns (uint256)
+        uint256 _sellAmount) public view returns (uint256)
     {
         // validate input
         require(_supply > 0 && _reserveBalance > 0 && _reserveRatio > 0 && _reserveRatio <= MAX_RESERVE_RATIO && _sellAmount <= _supply, "Invalid inputs.");
