@@ -31,7 +31,7 @@ contract('BancorFormula', () => {
       RESERVE_RATIO,
       buyAmount,
     );
-5
+
     assert.equal(sellAmount.toString(), '999999999999999999'); // ~1*10^18
   });
 });
