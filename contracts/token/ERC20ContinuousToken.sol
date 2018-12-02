@@ -1,6 +1,5 @@
 pragma solidity 0.4.25;
 
-import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 import "./ContinuousToken.sol";
 
 
@@ -11,9 +10,10 @@ contract ERC20ContinuousToken is ContinuousToken {
         string _name,
         string _symbol,
         uint8 _decimals,
+        uint _initialSupply,
         uint32 _reserveRatio,
         ERC20 _reserveToken
-    ) public ContinuousToken(_name, _symbol, _decimals, _reserveRatio) {
+    ) public ContinuousToken(_name, _symbol, _decimals, _initialSupply, _reserveRatio) {
         reserveToken = _reserveToken;
     }
 
@@ -28,4 +28,8 @@ contract ERC20ContinuousToken is ContinuousToken {
         uint returnAmount = _continuousBurn(_amount);
         reserveToken.transfer(msg.sender, returnAmount);
     }
+
+    function reserveBalance() public view returns (uint) {
+        return reserveToken.balanceOf(address(this));
+    }    
 }

@@ -7,11 +7,8 @@ import "../math/BancorFormula.sol";
 import "../lib/ValidGasPrice.sol";
 
 
-contract ContinuousToken is BancorFormula, ValidGasPrice, ERC20, ERC20Detailed {
+contract ContinuousToken is ValidGasPrice, BancorFormula, ERC20, ERC20Detailed {
     using SafeMath for uint;
-
-    uint public decimals = 10**18;
-    uint public reserveBalance; // Reserve balance in Ether
 
     /*
         reserve ratio, represented in ppm, 1-1000000
@@ -21,44 +18,49 @@ contract ContinuousToken is BancorFormula, ValidGasPrice, ERC20, ERC20Detailed {
     */
     uint32 public reserveRatio;
 
-    event ContinuousMint(address sender, uint amount, uint deposit);
-    event ContinuousBurn(address sender, uint amount, uint reimbursement);
+    event Minted(address sender, uint amount, uint deposit);
+    event Burned(address sender, uint amount, uint reimbursement);
 
     constructor(
         string _name,
         string _symbol,
         uint8 _decimals,
+        uint _initialSupply,
         uint32 _reserveRatio
     ) public ERC20Detailed(_name, _symbol, _decimals) {
         reserveRatio = _reserveRatio;
+        _mint(msg.sender, _initialSupply);
     }
 
-    function calculateContinuousMintReturn(uint _amount) public view returns (uint mintAmount) {
-        return calculatePurchaseReturn(totalSupply(), reserveBalance, reserveRatio, _amount);
+    function getContinuousMintReward(uint _amount) public view returns (uint mintAmount) {
+        return calculatePurchaseReturn(totalSupply(), reserveBalance(), reserveRatio, _amount);
     }
 
-    function calculateContinuousBurnReturn(uint _amount) public view returns (uint burnAmount) {
-        return calculateSaleReturn(totalSupply(), reserveBalance, reserveRatio, _amount);
+    function getContinuousBurnRefund(uint _amount) public view returns (uint burnAmount) {
+        return calculateSaleReturn(totalSupply(), reserveBalance(), reserveRatio, _amount);
     }
+
+    /**
+    * @dev Abstract method that returns reserve balance
+    */
+    function reserveBalance() public view returns (uint);
 
     function _continuousMint(uint _deposit) internal validGasPrice returns (uint) {
         require(_deposit > 0, "Deposit must be non-zero.");
 
-        uint amount = calculateContinuousMintReturn(_deposit);
-        _mint(msg.sender, amount);
-        reserveBalance = reserveBalance.add(_deposit);
-        emit ContinuousMint(msg.sender, amount, _deposit);
-        return amount;
+        uint rewardAmount = getContinuousMintReward(_deposit);
+        _mint(msg.sender, rewardAmount);
+        emit Minted(msg.sender, rewardAmount, _deposit);
+        return rewardAmount;
     }
 
     function _continuousBurn(uint _amount) internal validGasPrice returns (uint) {
         require(_amount > 0, "Amount must be non-zero.");
         require(balanceOf(msg.sender) >= _amount, "Insufficient tokens to burn.");
 
-        uint reimburseAmount = calculateContinuousBurnReturn(_amount);
-        reserveBalance = reserveBalance.sub(reimburseAmount);
+        uint refundAmount = getContinuousBurnRefund(_amount);
         _burn(msg.sender, _amount);
-        emit ContinuousBurn(msg.sender, _amount, reimburseAmount);
-        return reimburseAmount;
+        emit Burned(msg.sender, _amount, refundAmount);
+        return refundAmount;
     }
 }
