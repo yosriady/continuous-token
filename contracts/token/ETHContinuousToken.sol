@@ -3,7 +3,7 @@ pragma solidity 0.4.25;
 import "./ContinuousToken.sol";
 
 
-contract EtherContinuousToken is ContinuousToken {
+contract ETHContinuousToken is ContinuousToken {
     uint256 internal _reserveBalance;
   
     constructor(
@@ -18,7 +18,6 @@ contract EtherContinuousToken is ContinuousToken {
 
     function mint() public payable {
         uint purchaseAmount = msg.value;
-        require(purchaseAmount > 0, "Must send ether to buy tokens.");
         _continuousMint(purchaseAmount);
         _reserveBalance = _reserveBalance.add(purchaseAmount);
     }

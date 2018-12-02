@@ -32,11 +32,11 @@ contract ContinuousToken is ValidGasPrice, BancorFormula, ERC20, ERC20Detailed {
         _mint(msg.sender, _initialSupply);
     }
 
-    function getContinuousMintReward(uint _amount) public view returns (uint mintAmount) {
+    function getContinuousMintReward(uint _amount) public view returns (uint) {
         return calculatePurchaseReturn(totalSupply(), reserveBalance(), reserveRatio, _amount);
     }
 
-    function getContinuousBurnRefund(uint _amount) public view returns (uint burnAmount) {
+    function getContinuousBurnRefund(uint _amount) public view returns (uint) {
         return calculateSaleReturn(totalSupply(), reserveBalance(), reserveRatio, _amount);
     }
 
