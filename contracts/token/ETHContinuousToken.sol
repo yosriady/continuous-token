@@ -12,7 +12,9 @@ contract ETHContinuousToken is ContinuousToken {
         uint8 _decimals,
         uint _initialSupply,
         uint32 _reserveRatio
-    ) public ContinuousToken(_name, _symbol, _decimals, _initialSupply, _reserveRatio) {}
+    ) public payable ContinuousToken(_name, _symbol, _decimals, _initialSupply, _reserveRatio) {
+        _reserveBalance = msg.value;
+    }
 
     function () public payable { mint(); }
 

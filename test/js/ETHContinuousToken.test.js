@@ -7,7 +7,14 @@ const RESERVE_RATIO = 500000; // 1/2 reserve ratio
 
 contract('ETHContinuousToken', ([owner]) => {
   before(async () => {
-    this.token = await ETHContinuousToken.new('Gyld Token', 'GYL', DECIMALS, INITIAL_SUPPLY, RESERVE_RATIO);
+    this.token = await ETHContinuousToken.new(
+      'Gyld Token',
+      'GYL',
+      DECIMALS,
+      INITIAL_SUPPLY,
+      RESERVE_RATIO,
+      { value: ONE_ETHER },
+    );
   });
 
   it('initialized correctly', async () => {
@@ -21,24 +28,22 @@ contract('ETHContinuousToken', ([owner]) => {
     assert.equal(reserveRatio, RESERVE_RATIO);
 
     const reserveBalance = await this.token.reserveBalance();
-    assert.equal(reserveBalance, 0);
+    assert.equal(reserveBalance, ONE_ETHER);
   });
 
   // TODO: test mint, test burn
   it('should mint when passed ether', async () => {
-    // const depositAmount = ONE_ETHER;
+    const depositAmount = ONE_ETHER;
     // const result = await this.token.mint({ value: depositAmount });
-    // await this.token.mint({ value: depositAmount });
+    await this.token.mint({ value: depositAmount });
 
-    // TOFIX: failing with revert
     // const rewardAmount = await this.token.getContinuousMintReward(1);
     // assert.equal(rewardAmount.toString(), '');
 
-    // console.log(result);
     // TODO: assert _continuousMint event and new balanceOf(owner)
     //     emit Minted(msg.sender, rewardAmount, _deposit);
 
-    // const reserveBalance = await this.token.reserveBalance();
-    // assert.equal(reserveBalance, ONE_ETHER);
+    const reserveBalance = await this.token.reserveBalance();
+    assert.equal(reserveBalance, web3.utils.toWei('2', 'ether'));
   });
 });
