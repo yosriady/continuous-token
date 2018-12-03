@@ -5,9 +5,10 @@ import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol";
 import "../math/BancorFormula.sol";
 import "../lib/ValidGasPrice.sol";
+import "../interfaces/IBondingCurve.sol";
 
 
-contract ContinuousToken is ValidGasPrice, BancorFormula, ERC20, ERC20Detailed {
+contract BancorContinuousToken is IBondingCurve, ValidGasPrice, BancorFormula, ERC20, ERC20Detailed {
     using SafeMath for uint;
 
     /*

@@ -1,9 +1,9 @@
 pragma solidity 0.4.25;
 
-import "./ContinuousToken.sol";
+import "./BancorContinuousToken.sol";
 
 
-contract ERC20ContinuousToken is ContinuousToken {
+contract ERC20ContinuousToken is BancorContinuousToken {
     ERC20 public reserveToken;
 
     constructor(
@@ -13,7 +13,7 @@ contract ERC20ContinuousToken is ContinuousToken {
         uint _initialSupply,
         uint32 _reserveRatio,
         ERC20 _reserveToken
-    ) public ContinuousToken(_name, _symbol, _decimals, _initialSupply, _reserveRatio) {
+    ) public BancorContinuousToken(_name, _symbol, _decimals, _initialSupply, _reserveRatio) {
         reserveToken = _reserveToken;
     }
 

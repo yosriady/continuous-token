@@ -89,6 +89,6 @@ contract('ERC20ContinuousToken', ([owner, A]) => {
     assert.equal(newBalance.toString(), '0');
 
     const reserveBalance = await this.continuousToken.reserveBalance();
-    assert.equal(reserveBalance.toString(), '1000000000000000002'); // 2 - 0.9999 = ~1 RT    
+    assert.equal(reserveBalance.toString(), '1000000000000000002'); // 2 - 0.9999 = ~1 RT
   });
 });

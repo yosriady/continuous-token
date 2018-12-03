@@ -1,9 +1,9 @@
 pragma solidity 0.4.25;
 
-import "./ContinuousToken.sol";
+import "./BancorContinuousToken.sol";
 
 
-contract ETHContinuousToken is ContinuousToken {
+contract ETHContinuousToken is BancorContinuousToken {
     uint256 internal _reserveBalance;
   
     constructor(
@@ -12,7 +12,7 @@ contract ETHContinuousToken is ContinuousToken {
         uint8 _decimals,
         uint _initialSupply,
         uint32 _reserveRatio
-    ) public payable ContinuousToken(_name, _symbol, _decimals, _initialSupply, _reserveRatio) {
+    ) public payable BancorContinuousToken(_name, _symbol, _decimals, _initialSupply, _reserveRatio) {
         _reserveBalance = msg.value;
     }
 
