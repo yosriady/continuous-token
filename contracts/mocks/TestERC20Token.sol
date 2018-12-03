@@ -1,6 +1,6 @@
 pragma solidity 0.4.25;
 
-import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol";
 
 
-contract TestToken is ERC20 {}
+contract TestERC20Token is ERC20Mintable {}

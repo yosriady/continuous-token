@@ -1,6 +1,6 @@
 const { assertEvent } = require('../helpers');
 
-const ETHContinuousToken = artifacts.require('ETHContinuousToken');
+const ETHContinuousToken = artifacts.require('ETHContinuousToken.sol');
 
 const DECIMALS = 18;
 const ONE_ETHER = web3.utils.toWei('1', 'ether');
