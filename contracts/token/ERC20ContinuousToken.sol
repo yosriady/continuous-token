@@ -31,5 +31,5 @@ contract ERC20ContinuousToken is BancorContinuousToken {
 
     function reserveBalance() public view returns (uint) {
         return reserveToken.balanceOf(address(this));
-    }    
+    }
 }

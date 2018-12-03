@@ -3,21 +3,13 @@ pragma solidity 0.4.25;
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol";
-import "../math/BancorFormula.sol";
+
+import "../curves/BancorBondingCurve.sol";
 import "../lib/ValidGasPrice.sol";
-import "../interfaces/IBondingCurve.sol";
 
 
-contract BancorContinuousToken is IBondingCurve, ValidGasPrice, BancorFormula, ERC20, ERC20Detailed {
+contract BancorContinuousToken is ERC20, ERC20Detailed, BancorBondingCurve, ValidGasPrice {
     using SafeMath for uint;
-
-    /*
-        reserve ratio, represented in ppm, 1-1000000
-        1/3 corresponds to y= multiple * x^2
-        1/2 corresponds to y= multiple * x
-        2/3 corresponds to y= multiple * x^1/2
-    */
-    uint32 public reserveRatio;
 
     event Minted(address sender, uint amount, uint deposit);
     event Burned(address sender, uint amount, uint refund);
@@ -28,23 +20,13 @@ contract BancorContinuousToken is IBondingCurve, ValidGasPrice, BancorFormula, E
         uint8 _decimals,
         uint _initialSupply,
         uint32 _reserveRatio
-    ) public ERC20Detailed(_name, _symbol, _decimals) {
-        reserveRatio = _reserveRatio;
+    ) public ERC20Detailed(_name, _symbol, _decimals) BancorBondingCurve(_reserveRatio) {
         _mint(msg.sender, _initialSupply);
     }
 
-    function getContinuousMintReward(uint _reserveTokenAmount) public view returns (uint) {
-        return calculatePurchaseReturn(totalSupply(), reserveBalance(), reserveRatio, _reserveTokenAmount);
+    function continuousSupply() public view returns (uint) {
+        return totalSupply(); // Continuous Token total supply
     }
-
-    function getContinuousBurnRefund(uint _continuousTokenAmount) public view returns (uint) {
-        return calculateSaleReturn(totalSupply(), reserveBalance(), reserveRatio, _continuousTokenAmount);
-    }
-
-    /**
-    * @dev Abstract method that returns reserve balance
-    */
-    function reserveBalance() public view returns (uint);
 
     function _continuousMint(uint _deposit) internal validGasPrice returns (uint) {
         require(_deposit > 0, "Deposit must be non-zero.");

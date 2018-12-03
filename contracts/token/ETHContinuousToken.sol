@@ -4,7 +4,7 @@ import "./BancorContinuousToken.sol";
 
 
 contract ETHContinuousToken is BancorContinuousToken {
-    uint256 internal _reserveBalance;
+    uint256 internal reserve;
   
     constructor(
         string _name,
@@ -13,7 +13,7 @@ contract ETHContinuousToken is BancorContinuousToken {
         uint _initialSupply,
         uint32 _reserveRatio
     ) public payable BancorContinuousToken(_name, _symbol, _decimals, _initialSupply, _reserveRatio) {
-        _reserveBalance = msg.value;
+        reserve = msg.value;
     }
 
     function () public payable { mint(); }
@@ -21,16 +21,16 @@ contract ETHContinuousToken is BancorContinuousToken {
     function mint() public payable {
         uint purchaseAmount = msg.value;
         _continuousMint(purchaseAmount);
-        _reserveBalance = _reserveBalance.add(purchaseAmount);
+        reserve = reserve.add(purchaseAmount);
     }
 
     function burn(uint _amount) public {
         uint refundAmount = _continuousBurn(_amount);
-        _reserveBalance = _reserveBalance.sub(refundAmount);
+        reserve = reserve.sub(refundAmount);
         msg.sender.transfer(refundAmount);
     }
 
     function reserveBalance() public view returns (uint) {
-        return _reserveBalance;
+        return reserve;
     }    
 }
