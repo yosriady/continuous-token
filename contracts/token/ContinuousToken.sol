@@ -19,7 +19,7 @@ contract ContinuousToken is ValidGasPrice, BancorFormula, ERC20, ERC20Detailed {
     uint32 public reserveRatio;
 
     event Minted(address sender, uint amount, uint deposit);
-    event Burned(address sender, uint amount, uint reimbursement);
+    event Burned(address sender, uint amount, uint refund);
 
     constructor(
         string _name,
@@ -32,12 +32,12 @@ contract ContinuousToken is ValidGasPrice, BancorFormula, ERC20, ERC20Detailed {
         _mint(msg.sender, _initialSupply);
     }
 
-    function getContinuousMintReward(uint _amount) public view returns (uint) {
-        return calculatePurchaseReturn(totalSupply(), reserveBalance(), reserveRatio, _amount);
+    function getContinuousMintReward(uint _reserveTokenAmount) public view returns (uint) {
+        return calculatePurchaseReturn(totalSupply(), reserveBalance(), reserveRatio, _reserveTokenAmount);
     }
 
-    function getContinuousBurnRefund(uint _amount) public view returns (uint) {
-        return calculateSaleReturn(totalSupply(), reserveBalance(), reserveRatio, _amount);
+    function getContinuousBurnRefund(uint _continuousTokenAmount) public view returns (uint) {
+        return calculateSaleReturn(totalSupply(), reserveBalance(), reserveRatio, _continuousTokenAmount);
     }
 
     /**
