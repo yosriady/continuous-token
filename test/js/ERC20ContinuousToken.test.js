@@ -61,13 +61,34 @@ contract('ERC20ContinuousToken', ([owner, A]) => {
     }, 'A Minted event is emitted');
 
     const reserveBalance = await this.continuousToken.reserveBalance();
-    assert.equal(reserveBalance, web3.utils.toWei('2', 'ether'));
+    assert.equal(reserveBalance, web3.utils.toWei('2', 'ether')); // 2 RT
 
     const newBalance = await this.continuousToken.balanceOf(A);
     assert.equal(newBalance.toString(), rewardAmount.toString());
   });
 
-  // it('should refund reserve tokens when burned', async () => {
+  it('should refund reserve tokens when burned', async () => {
+    const oldBalance = await this.continuousToken.balanceOf(A);
+    assert.equal(oldBalance.toString(), '414213562373095048'); // 0.4 CT
 
-  // });
+    const burnAmount = oldBalance;
+    const refundAmount = await this.continuousToken.getContinuousBurnRefund(burnAmount);
+    assert.equal(refundAmount.toString(), '999999999999999998'); // ~1 RT
+
+    const result = await this.continuousToken.burn(burnAmount, { from: A });
+    assertEvent(result, 1, {
+      event: 'Burned',
+      args: {
+        sender: A,
+        amount: burnAmount,
+        refund: refundAmount,
+      },
+    }, 'A Burned event is emitted');
+
+    const newBalance = await this.continuousToken.balanceOf(A);
+    assert.equal(newBalance.toString(), '0');
+
+    const reserveBalance = await this.continuousToken.reserveBalance();
+    assert.equal(reserveBalance.toString(), '1000000000000000002'); // 2 - 0.9999 = ~1 RT    
+  });
 });
