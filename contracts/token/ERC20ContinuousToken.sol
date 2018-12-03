@@ -20,13 +20,13 @@ contract ERC20ContinuousToken is ContinuousToken {
     function () public { revert("Cannot call fallback function."); }
 
     function mint(uint _amount) public {
-        require(reserveToken.transferFrom(msg.sender, address(this), _amount), "ERC20.transferFrom failed.");
         _continuousMint(_amount);
+        require(reserveToken.transferFrom(msg.sender, address(this), _amount), "ERC20.transferFrom failed.");
     }
 
     function burn(uint _amount) public {
         uint returnAmount = _continuousBurn(_amount);
-        reserveToken.transfer(msg.sender, returnAmount);
+        require(reserveToken.transfer(msg.sender, returnAmount), "ERC20.transfer failed.");
     }
 
     function reserveBalance() public view returns (uint) {
