@@ -3,11 +3,10 @@ pragma solidity 0.4.25;
 import "./ContinuousToken.sol";
 
 
+// Need additional attributes for creator / caretaker address and fees
+// TODO: Define ERC20ContinuousTokenWithFees
 contract ERC20ContinuousToken is ContinuousToken {
     ERC20 public reserveToken;
-
-    // Need additional attributes for creator / caretaker address and fees
-    // TODO: Define ERC20ContinuousTokenWithFees
 
     constructor(
         string _name,

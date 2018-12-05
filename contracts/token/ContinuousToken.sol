@@ -9,7 +9,7 @@ import "../curves/BancorBondingCurve.sol";
 import "../lib/ValidGasPrice.sol";
 
 
-contract ContinuousToken is ERC20, ERC20Detailed, BancorBondingCurve, ValidGasPrice {
+contract ContinuousToken is Ownable, ERC20, ERC20Detailed, BancorBondingCurve, ValidGasPrice {
     using SafeMath for uint;
 
     event Minted(address sender, uint amount, uint deposit);
