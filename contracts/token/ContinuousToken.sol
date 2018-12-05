@@ -1,5 +1,6 @@
 pragma solidity 0.4.25;
 
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol";
@@ -8,7 +9,7 @@ import "../curves/BancorBondingCurve.sol";
 import "../lib/ValidGasPrice.sol";
 
 
-contract BancorContinuousToken is ERC20, ERC20Detailed, BancorBondingCurve, ValidGasPrice {
+contract ContinuousToken is ERC20, ERC20Detailed, BancorBondingCurve, ValidGasPrice {
     using SafeMath for uint;
 
     event Minted(address sender, uint amount, uint deposit);
