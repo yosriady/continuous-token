@@ -47,4 +47,14 @@ contract ContinuousToken is Ownable, ERC20, ERC20Detailed, BancorBondingCurve, V
         emit Burned(msg.sender, _amount, refundAmount);
         return refundAmount;
     }
+
+    function sponsoredBurn(uint _amount) public {
+        _burn(msg.sender, _amount);
+        emit Burned(msg.sender, _amount, 0);
+    }
+
+    function sponsoredBurnFrom(address _from, uint _amount) public {
+        _burnFrom(_from, _amount);
+        emit Burned(msg.sender, _amount, 0);
+    }    
 }

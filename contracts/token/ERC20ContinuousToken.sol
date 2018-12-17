@@ -29,17 +29,11 @@ contract ERC20ContinuousToken is ContinuousToken {
     function () public { revert("Cannot call fallback function."); }
 
     function mint(uint _amount) public {
-        // TODO: send X% of _amount to creatorAddress
-        // TODO: send Y% of _amount to caretakerAddress
-        // Need to be implemented in ContinuousToken._continuousMintWithFees()
         _continuousMint(_amount);
         require(reserveToken.transferFrom(msg.sender, address(this), _amount), "mint() ERC20.transferFrom failed.");
     }
 
     function burn(uint _amount) public {
-        // TODO: send X% of _amount to creatorAddress
-        // TODO: send Y% of _amount to caretakerAddress
-        // Can  be implemented here with multiple reserveToken.transfer(creator / caretaker, splitAmount)
         uint returnAmount = _continuousBurn(_amount);
         require(reserveToken.transfer(msg.sender, returnAmount), "burn() ERC20.transfer failed.");
     }

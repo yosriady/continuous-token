@@ -2,10 +2,13 @@ const BN = require('bn.js');
 
 const BancorFormula = artifacts.require('BancorFormula');
 
-const INITIAL_CONTINUOUS_TOKEN_SUPPLY = new BN(web3.utils.toWei('2')); // Note: As CT supply increases, CT price increases
-const INITIAL_RESERVE_TOKEN_BALANCE = new BN(web3.utils.toWei('0.5')); // Note: The higher the initial RT balance, the lower the initial CT prices are
-// Note as both initial CT and RT increases proportionally following the reserve ratio , CT price increases at a slower rate
-const RESERVE_RATIO_50 = 500000; // Note: As reserve ratio increases, CT price increases at a slower rate
+// Note: As CT supply increases, CT price increases
+const INITIAL_CONTINUOUS_TOKEN_SUPPLY = new BN(web3.utils.toWei('2'));
+// Note: The higher the initial RT balance, the lower the initial CT prices are
+const INITIAL_RESERVE_TOKEN_BALANCE = new BN(web3.utils.toWei('0.5'));
+// As both initial CT and RT increases along the reserve ratio, CT price increases at slower rate
+// Note: As reserve ratio increases, CT price increases at a slower rate
+const RESERVE_RATIO_50 = 500000;
 const RESERVE_RATIO_90 = 900000;
 const ONE_TOKEN = new BN(web3.utils.toWei('1'));
 const RESERVE_TOKEN_DEPOSIT_AMOUNT = ONE_TOKEN;
@@ -18,7 +21,13 @@ function effectivePrice(reserveTokenAmount, continuousTokenAmount) {
   return toDecimalString(reserveTokenAmount.mul(ONE_TOKEN).div(continuousTokenAmount));
 }
 
-async function simulatePriceGrowth(contract, reserveRatio, continuousSupply, reserveBalance, purchaseIncrement) {
+async function simulatePriceGrowth(
+  contract,
+  reserveRatio,
+  continuousSupply,
+  reserveBalance,
+  purchaseIncrement,
+) {
   console.info(`reserveRatio: ${reserveRatio}`);
   console.info(`continuousSupply: ${toDecimalString(continuousSupply)} CT`);
   console.info(`reserveBalance: ${toDecimalString(reserveBalance)} RT`);
@@ -26,6 +35,7 @@ async function simulatePriceGrowth(contract, reserveRatio, continuousSupply, res
   let continuousTokenSupply = continuousSupply;
   let reserveTokenBalance = reserveBalance;
   for (let i = 0; i < 10; i += 1) {
+    // eslint-disable-next-line
     const continuousTokenAmount = await contract.calculatePurchaseReturn(
       continuousTokenSupply,
       reserveTokenBalance,
@@ -67,8 +77,9 @@ contract('BancorFormula', () => {
   });
 
   it('calculates CT price growth', async () => {
-    // TODO: Need a 'golden mean' of initial CT supply and reserve token balance that leads to an acceptable initial CT price and growth.
-    // After X initial CT supply and Y reserve token balance, acceptable CT price must be 1 ERC20 token (e.g. Dai) = 1 CT
+    // After X initial CT supply and Y reserve token balance,
+    // acceptable CT price must be 1 ERC20 token (e.g. Dai) = 1 CT
+    // TODO: make 1CT be equal to 0.01 ETH
     const RESERVE_RATIO = RESERVE_RATIO_90;
     const BUY_INCREMENT = new BN(web3.utils.toWei('10'));
     const CT_SUPPLY = new BN(web3.utils.toWei('100'));
