@@ -1,4 +1,4 @@
-# Continuous Curve-Bonded Token
+# Continuous Token
 
 ERC20 Continuous Token backed by bonding curves and an automated market maker contract.
 
